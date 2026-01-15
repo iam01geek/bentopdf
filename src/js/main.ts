@@ -97,13 +97,6 @@ const init = async () => {
           <div class="container mx-auto px-4">
             <div class="flex items-center justify-between flex-wrap gap-4">
               <div>
-                <div class="flex items-center mb-2">
-                  <img src="/images/favicon.svg" alt="Bento PDF Logo" class="h-8 w-8 mr-2">
-                  <span class="text-white font-bold text-lg">BentoPDF</span>
-                </div>
-                <p class="text-gray-400 text-sm">
-                  &copy; 2026 BentoPDF. All rights reserved.
-                </p>
                 <p class="text-gray-500 text-xs mt-2">
                   Version <span id="app-version-simple">${APP_VERSION}</span>
                 </p>
@@ -458,41 +451,6 @@ const init = async () => {
 
   // Initialize Shortcuts System
   ShortcutsManager.init();
-
-  // Tab switching for settings modal
-  const shortcutsTabBtn = document.getElementById('shortcuts-tab-btn');
-  const preferencesTabBtn = document.getElementById('preferences-tab-btn');
-  const shortcutsTabContent = document.getElementById('shortcuts-tab-content');
-  const preferencesTabContent = document.getElementById('preferences-tab-content');
-  const shortcutsTabFooter = document.getElementById('shortcuts-tab-footer');
-  const preferencesTabFooter = document.getElementById('preferences-tab-footer');
-  const resetShortcutsBtn = document.getElementById('reset-shortcuts-btn');
-
-  if (shortcutsTabBtn && preferencesTabBtn) {
-    shortcutsTabBtn.addEventListener('click', () => {
-      shortcutsTabBtn.classList.add('bg-indigo-600', 'text-white');
-      shortcutsTabBtn.classList.remove('text-gray-300');
-      preferencesTabBtn.classList.remove('bg-indigo-600', 'text-white');
-      preferencesTabBtn.classList.add('text-gray-300');
-      shortcutsTabContent?.classList.remove('hidden');
-      preferencesTabContent?.classList.add('hidden');
-      shortcutsTabFooter?.classList.remove('hidden');
-      preferencesTabFooter?.classList.add('hidden');
-      resetShortcutsBtn?.classList.remove('hidden');
-    });
-
-    preferencesTabBtn.addEventListener('click', () => {
-      preferencesTabBtn.classList.add('bg-indigo-600', 'text-white');
-      preferencesTabBtn.classList.remove('text-gray-300');
-      shortcutsTabBtn.classList.remove('bg-indigo-600', 'text-white');
-      shortcutsTabBtn.classList.add('text-gray-300');
-      preferencesTabContent?.classList.remove('hidden');
-      shortcutsTabContent?.classList.add('hidden');
-      preferencesTabFooter?.classList.remove('hidden');
-      shortcutsTabFooter?.classList.add('hidden');
-      resetShortcutsBtn?.classList.add('hidden');
-    });
-  }
 
   // Full-width toggle functionality
   const fullWidthToggle = document.getElementById('full-width-toggle') as HTMLInputElement;

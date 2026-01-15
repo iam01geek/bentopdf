@@ -1,0 +1,9 @@
+{
+  "id": "bentopdf",
+  "name": "Bento PDF",
+  "version": "1.0.0",
+  "description": "PDF 工具集",
+  "author": "iam01geek",
+  "type": "external",
+  "icon": "bentopdf.png"
+}

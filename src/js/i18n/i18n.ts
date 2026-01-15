@@ -14,17 +14,19 @@ export const languageNames: Record<SupportedLanguage, string> = {
 };
 
 export const getLanguageFromUrl = (): SupportedLanguage => {
-    const path = window.location.pathname;
-    const langMatch = path.match(/^\/(en|de|zh|vi)(?:\/|$)/);
-    if (langMatch && supportedLanguages.includes(langMatch[1] as SupportedLanguage)) {
-        return langMatch[1] as SupportedLanguage;
-    }
     const storedLang = localStorage.getItem('i18nextLng');
     if (storedLang && supportedLanguages.includes(storedLang as SupportedLanguage)) {
         return storedLang as SupportedLanguage;
     }
 
-    return 'en';
+    // Fallback to browser language detection
+    const browserLang = navigator.language.split('-')[0];
+    if (supportedLanguages.includes(browserLang as SupportedLanguage)) {
+        return browserLang as SupportedLanguage;
+    }
+
+    // Default to Chinese instead of English
+    return 'zh';
 };
 
 let initialized = false;
@@ -47,8 +49,7 @@ export const initI18n = async (): Promise<typeof i18next> => {
                 loadPath: `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}locales/{{lng}}/{{ns}}.json`,
             },
             detection: {
-                order: ['path', 'localStorage', 'navigator'],
-                lookupFromPathIndex: 0,
+                order: ['localStorage', 'navigator'],
                 caches: ['localStorage'],
             },
             interpolation: {
@@ -67,20 +68,11 @@ export const t = (key: string, options?: Record<string, unknown>): string => {
 export const changeLanguage = (lang: SupportedLanguage): void => {
     if (!supportedLanguages.includes(lang)) return;
 
-    const currentPath = window.location.pathname;
-    const currentLang = getLanguageFromUrl();
-
-    let newPath: string;
-    if (currentPath.match(/^\/(en|de|zh|vi)\//)) {
-        newPath = currentPath.replace(/^\/(en|de|zh|vi)\//, `/${lang}/`);
-    } else if (currentPath.match(/^\/(en|de|zh|vi)$/)) {
-        newPath = `/${lang}`;
-    } else {
-        newPath = `/${lang}${currentPath}`;
-    }
-
-    const newUrl = newPath + window.location.search + window.location.hash;
-    window.location.href = newUrl;
+    // Update localStorage with the new language
+    localStorage.setItem('i18nextLng', lang);
+    
+    // Refresh the page to apply the new language
+    window.location.reload();
 };
 
 // Apply translations to all elements with data-i18n attribute
@@ -119,38 +111,9 @@ export const applyTranslations = (): void => {
 };
 
 export const rewriteLinks = (): void => {
-    const currentLang = getLanguageFromUrl();
-    if (currentLang === 'en') return;
-
-    const links = document.querySelectorAll('a[href]');
-    links.forEach((link) => {
-        const href = link.getAttribute('href');
-        if (!href) return;
-
-        if (href.startsWith('http') ||
-            href.startsWith('mailto:') ||
-            href.startsWith('tel:') ||
-            href.startsWith('#') ||
-            href.startsWith('javascript:')) {
-            return;
-        }
-
-        if (href.match(/^\/(en|de|zh|vi)\//)) {
-            return;
-        }
-        let newHref: string;
-        if (href.startsWith('/')) {
-            newHref = `/${currentLang}${href}`;
-        } else if (href.startsWith('./')) {
-            newHref = href.replace('./', `/${currentLang}/`);
-        } else if (href === '/' || href === '') {
-            newHref = `/${currentLang}/`;
-        } else {
-            newHref = `/${currentLang}/${href}`;
-        }
-
-        link.setAttribute('href', newHref);
-    });
+    // This function is no longer needed since we're not using URL path prefixes for languages
+    // The function is kept for potential future use but does nothing
+    return;
 };
 
 export default i18next;

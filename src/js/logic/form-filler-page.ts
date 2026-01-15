@@ -87,8 +87,8 @@ function resetState() {
     const toolUploader = document.getElementById('tool-uploader');
     const isFullWidth = localStorage.getItem('fullWidthMode') !== 'false';
     if (toolUploader && !isFullWidth) {
-        toolUploader.classList.remove('max-w-6xl');
-        toolUploader.classList.add('max-w-2xl');
+        toolUploader.classList.remove('max-w-2xl');
+        toolUploader.classList.add('max-w-6xl');
     }
 }
 
